@@ -6,76 +6,73 @@ import os
 
 # ── page config ────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="SentimentLens — AI Sentiment Analyzer",
+    page_title="SentimentLens",
     page_icon="🎬",
-    layout="centered"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-# ── CSS — clean professional blue and white ────────────────────────────
+# ── CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    /* white page background */
+    /* hide Streamlit top bar, hamburger menu, footer */
+    #MainMenu { visibility: hidden; }
+    header { visibility: hidden; }
+    footer { visibility: hidden; }
+    [data-testid="stToolbar"] { display: none; }
+    [data-testid="collapsedControl"] { display: none; }
+
+    /* white background */
     .stApp {
-        background-color: #f0f4f8;
+        background-color: #ffffff;
     }
-
     .main .block-container {
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-        max-width: 760px;
+        padding-top: 1.5rem;
+        padding-bottom: 2rem;
+        max-width: 720px;
     }
 
-    /* hero banner */
+    /* hero */
     .hero {
-        background: linear-gradient(135deg, #1a56db 0%, #1e429f 100%);
-        border-radius: 16px;
-        padding: 32px 36px;
-        margin-bottom: 24px;
-        color: white;
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        border-radius: 14px;
+        padding: 24px 28px;
+        margin-bottom: 20px;
     }
     .hero-title {
-        font-size: 2.2rem;
+        font-size: 1.9rem;
         font-weight: 800;
-        color: white;
-        margin: 0 0 6px;
-        letter-spacing: -0.02em;
+        color: #ffffff;
+        margin: 0 0 4px;
+        letter-spacing: -0.01em;
     }
     .hero-subtitle {
-        font-size: 0.95rem;
-        color: rgba(255,255,255,0.8);
-        margin: 0 0 16px;
-        line-height: 1.6;
+        font-size: 0.88rem;
+        color: rgba(255,255,255,0.85);
+        margin: 0 0 14px;
+        line-height: 1.5;
     }
     .hero-badge {
         display: inline-block;
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.3);
-        color: white;
-        padding: 3px 12px;
+        background: rgba(255,255,255,0.18);
+        border: 1px solid rgba(255,255,255,0.35);
+        color: #ffffff;
+        padding: 2px 10px;
         border-radius: 20px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        margin-right: 6px;
-    }
-
-    /* white content cards */
-    .content-card {
-        background: white;
-        border-radius: 12px;
-        padding: 24px 28px;
-        margin-bottom: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-
-    .card-label {
-        font-size: 0.78rem;
+        font-size: 0.7rem;
         font-weight: 700;
-        color: #1a56db;
+        letter-spacing: 0.07em;
+        margin-right: 5px;
+    }
+
+    /* section label */
+    .section-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #1d4ed8;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     /* text area */
@@ -83,16 +80,15 @@ st.markdown("""
         background: #f8fafc !important;
         border: 1.5px solid #cbd5e1 !important;
         border-radius: 10px !important;
-        color: #1e293b !important;
-        font-size: 0.95rem !important;
+        color: #0f172a !important;
+        font-size: 0.93rem !important;
         line-height: 1.7 !important;
-        padding: 14px !important;
-        transition: border-color 0.2s !important;
+        padding: 12px 14px !important;
     }
     .stTextArea textarea:focus {
-        border-color: #1a56db !important;
-        box-shadow: 0 0 0 3px rgba(26,86,219,0.08) !important;
-        background: white !important;
+        border-color: #1d4ed8 !important;
+        box-shadow: 0 0 0 3px rgba(29,78,216,0.1) !important;
+        background: #ffffff !important;
     }
     .stTextArea textarea::placeholder {
         color: #94a3b8 !important;
@@ -100,23 +96,20 @@ st.markdown("""
 
     /* analyse button */
     .stButton > button {
-        background: linear-gradient(135deg, #1a56db 0%, #1e429f 100%) !important;
-        color: white !important;
+        background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+        color: #ffffff !important;
         border: none !important;
         border-radius: 10px !important;
         font-size: 0.95rem !important;
         font-weight: 600 !important;
-        padding: 0.65rem 2rem !important;
-        letter-spacing: 0.03em !important;
-        box-shadow: 0 4px 12px rgba(26,86,219,0.25) !important;
-        transition: all 0.2s ease !important;
+        padding: 0.6rem 1.5rem !important;
+        box-shadow: 0 3px 10px rgba(29,78,216,0.3) !important;
+        transition: all 0.2s !important;
+        width: 100% !important;
     }
     .stButton > button:hover {
-        box-shadow: 0 6px 18px rgba(26,86,219,0.35) !important;
+        box-shadow: 0 5px 16px rgba(29,78,216,0.4) !important;
         transform: translateY(-1px) !important;
-    }
-    .stButton > button:active {
-        transform: translateY(0) !important;
     }
 
     /* result cards */
@@ -125,54 +118,53 @@ st.markdown("""
         border: 1px solid #86efac;
         border-left: 5px solid #16a34a;
         border-radius: 12px;
-        padding: 20px 24px;
+        padding: 18px 22px;
         margin-top: 16px;
     }
     .result-negative {
         background: #fff1f2;
-        border: 1px solid #fda4af;
+        border: 1px solid #fecdd3;
         border-left: 5px solid #dc2626;
         border-radius: 12px;
-        padding: 20px 24px;
+        padding: 18px 22px;
         margin-top: 16px;
     }
     .result-label-pos {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 800;
-        color: #16a34a;
-        margin: 0 0 4px;
+        color: #15803d;
+        margin: 0 0 3px;
     }
     .result-label-neg {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 800;
-        color: #dc2626;
-        margin: 0 0 4px;
+        color: #b91c1c;
+        margin: 0 0 3px;
     }
     .result-desc {
-        font-size: 0.9rem;
-        color: #64748b;
+        font-size: 0.88rem;
+        color: #374151;
         margin: 0;
     }
 
     /* metric cards */
     div[data-testid="metric-container"] {
-        background: white !important;
+        background: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 10px !important;
-        padding: 14px 16px !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+        padding: 12px 14px !important;
     }
     div[data-testid="metric-container"] label {
-        color: #64748b !important;
-        font-size: 0.72rem !important;
+        color: #475569 !important;
+        font-size: 0.7rem !important;
         font-weight: 700 !important;
-        letter-spacing: 0.08em !important;
+        letter-spacing: 0.07em !important;
         text-transform: uppercase !important;
     }
     div[data-testid="metric-container"]
     div[data-testid="stMetricValue"] {
-        color: #1e293b !important;
-        font-size: 1.5rem !important;
+        color: #0f172a !important;
+        font-size: 1.4rem !important;
         font-weight: 700 !important;
     }
 
@@ -183,54 +175,67 @@ st.markdown("""
         height: 8px !important;
     }
     div[data-testid="stProgress"] > div > div {
-        background: linear-gradient(90deg, #1a56db, #3b82f6) !important;
+        background: linear-gradient(90deg, #1d4ed8, #3b82f6) !important;
         border-radius: 10px !important;
     }
 
-    /* sidebar */
-    section[data-testid="stSidebar"] {
-        background: white !important;
-        border-right: 1px solid #e2e8f0 !important;
-    }
-
-    /* divider */
-    hr {
-        border-color: #e2e8f0 !important;
-    }
-
-    /* score breakdown */
+    /* score box */
     .score-box {
         background: #f8fafc;
         border: 1px solid #e2e8f0;
         border-radius: 10px;
-        padding: 14px 18px;
-        margin-top: 14px;
-        font-size: 0.88rem;
-        color: #475569;
+        padding: 13px 16px;
+        margin-top: 12px;
+        font-size: 0.85rem;
+        color: #374151;
         line-height: 1.9;
     }
+    .score-box strong {
+        color: #0f172a;
+    }
+    .score-box code {
+        background: #e2e8f0;
+        color: #1d4ed8;
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 0.82rem;
+    }
 
-    /* example box */
+    /* examples box */
     .example-box {
         background: #f8fafc;
         border: 1px solid #e2e8f0;
-        border-left: 4px solid #1a56db;
-        border-radius: 0 10px 10px 0;
-        padding: 12px 16px;
-        font-size: 0.85rem;
-        color: #475569;
-        line-height: 1.7;
+        border-left: 4px solid #1d4ed8;
+        border-radius: 0 8px 8px 0;
+        padding: 10px 14px;
+        font-size: 0.84rem;
+        color: #374151;
+        line-height: 1.6;
+        margin: 6px 0;
+        font-style: italic;
+    }
+    .example-box-neg {
+        background: #fff8f8;
+        border: 1px solid #fecdd3;
+        border-left: 4px solid #dc2626;
+        border-radius: 0 8px 8px 0;
+        padding: 10px 14px;
+        font-size: 0.84rem;
+        color: #374151;
+        line-height: 1.6;
         margin: 6px 0;
         font-style: italic;
     }
 
-    /* footer */
-    .footer {
-        text-align: center;
-        color: #94a3b8;
-        font-size: 0.78rem;
-        margin-top: 2rem;
-        letter-spacing: 0.03em;
+    /* sidebar */
+    section[data-testid="stSidebar"] {
+        background: #f8fafc !important;
+        border-right: 1px solid #e2e8f0 !important;
+    }
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] div,
+    section[data-testid="stSidebar"] span {
+        color: #374151 !important;
     }
 
     /* stack chip */
@@ -238,194 +243,211 @@ st.markdown("""
         display: inline-block;
         background: #eff6ff;
         border: 1px solid #bfdbfe;
-        color: #1a56db;
-        padding: 2px 10px;
+        color: #1d4ed8;
+        padding: 2px 9px;
         border-radius: 12px;
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 600;
         margin: 2px;
     }
 
-    /* general text */
-    .stMarkdown p { color: #475569; }
-    h1, h2, h3, h4 { color: #1e293b !important; }
+    /* divider */
+    hr { border-color: #e2e8f0 !important; }
+
+    /* footer */
+    .footer {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.76rem;
+        margin-top: 1.5rem;
+        letter-spacing: 0.03em;
+    }
+
+    /* expander */
+    details summary {
+        color: #1d4ed8 !important;
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+    }
+    details {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        padding: 4px 12px !important;
+    }
+
+    /* general text visibility */
+    p, span, div, label {
+        color: #374151;
+    }
+    h1, h2, h3, h4, h5 {
+        color: #0f172a !important;
+    }
+
+    /* warning / info boxes */
+    div[data-testid="stAlert"] {
+        border-radius: 10px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# ── API URL ────────────────────────────────────────────────────────────
+# ── constants ──────────────────────────────────────────────────────────
 API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
 # ── sidebar ────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        "<div style='font-size:1.1rem;font-weight:700;"
-        "color:#1e293b;margin-bottom:4px'>🎬 SentimentLens</div>",
+        "<p style='font-size:1rem;font-weight:700;color:#0f172a;"
+        "margin-bottom:2px'>🎬 SentimentLens</p>",
         unsafe_allow_html=True
     )
     st.markdown(
-        "<div style='font-size:0.8rem;color:#94a3b8;"
-        "margin-bottom:16px'>AI Sentiment Analyzer</div>",
+        "<p style='font-size:0.78rem;color:#64748b;"
+        "margin-bottom:12px'>AI Sentiment Analyzer</p>",
         unsafe_allow_html=True
     )
     st.markdown("---")
 
     st.markdown(
-        "<div style='font-size:0.72rem;font-weight:700;"
-        "color:#1a56db;letter-spacing:.08em;"
-        "text-transform:uppercase;margin-bottom:8px'>About</div>",
+        "<p style='font-size:0.7rem;font-weight:700;color:#1d4ed8;"
+        "letter-spacing:.08em;text-transform:uppercase;"
+        "margin-bottom:6px'>About</p>",
         unsafe_allow_html=True
     )
-    st.markdown("""
-    <div style='font-size:0.85rem;color:#475569;line-height:1.8'>
-    Classifies movie reviews as
-    <span style='color:#16a34a;font-weight:600'>positive</span> or
-    <span style='color:#dc2626;font-weight:600'>negative</span>
-    using a deep learning LSTM model trained on 25,000 IMDB reviews.
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
     st.markdown(
-        "<div style='font-size:0.72rem;font-weight:700;"
-        "color:#1a56db;letter-spacing:.08em;"
-        "text-transform:uppercase;margin-bottom:8px'>Model</div>",
+        "<p style='font-size:0.83rem;color:#374151;line-height:1.7'>"
+        "Classifies movie reviews as "
+        "<span style='color:#15803d;font-weight:600'>positive</span> or "
+        "<span style='color:#b91c1c;font-weight:600'>negative</span> "
+        "using an LSTM deep learning model trained on 25,000 IMDB reviews."
+        "</p>",
         unsafe_allow_html=True
     )
-    st.markdown("""
-    <div style='font-size:0.83rem;color:#475569;line-height:2'>
-    🏗 Architecture: LSTM<br>
-    📊 Dataset: IMDB 25,000 reviews<br>
-    🎯 Test accuracy: 83.54%<br>
-    📖 Vocabulary: 10,000 words<br>
-    ⚖️ Parameters: 1.3M weights
-    </div>
-    """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
     st.markdown(
-        "<div style='font-size:0.72rem;font-weight:700;"
-        "color:#1a56db;letter-spacing:.08em;"
-        "text-transform:uppercase;margin-bottom:8px'>Stack</div>",
+        "<p style='font-size:0.7rem;font-weight:700;color:#1d4ed8;"
+        "letter-spacing:.08em;text-transform:uppercase;"
+        "margin:12px 0 6px'>Model</p>",
         unsafe_allow_html=True
     )
-    st.markdown("""
-    <span class='stack-chip'>TensorFlow</span>
-    <span class='stack-chip'>Keras LSTM</span>
-    <span class='stack-chip'>FastAPI</span>
-    <span class='stack-chip'>Streamlit</span>
-    <span class='stack-chip'>Docker</span>
-    <span class='stack-chip'>AWS EC2</span>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        "<p style='font-size:0.82rem;color:#374151;line-height:2'>"
+        "🏗 Architecture: LSTM<br>"
+        "📊 Dataset: IMDB 25k reviews<br>"
+        "🎯 Test accuracy: 83.54%<br>"
+        "📖 Vocabulary: 10,000 words<br>"
+        "⚖️ Parameters: 1.3M weights"
+        "</p>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        "<p style='font-size:0.7rem;font-weight:700;color:#1d4ed8;"
+        "letter-spacing:.08em;text-transform:uppercase;"
+        "margin:12px 0 6px'>Stack</p>",
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        "<span class='stack-chip'>TensorFlow</span>"
+        "<span class='stack-chip'>Keras LSTM</span>"
+        "<span class='stack-chip'>FastAPI</span>"
+        "<span class='stack-chip'>Streamlit</span>"
+        "<span class='stack-chip'>Docker</span>"
+        "<span class='stack-chip'>AWS EC2</span>",
+        unsafe_allow_html=True
+    )
 
     st.markdown("---")
-    st.markdown(
-        "<div style='font-size:0.72rem;font-weight:700;"
-        "color:#1a56db;letter-spacing:.08em;"
-        "text-transform:uppercase;margin-bottom:8px'>Settings</div>",
-        unsafe_allow_html=True
-    )
     threshold = st.slider(
         "Decision threshold",
         min_value=0.1,
         max_value=0.9,
         value=0.5,
         step=0.05,
-        help="Scores ≥ threshold → POSITIVE. Below → NEGATIVE."
+        help="Scores ≥ threshold = POSITIVE. Below = NEGATIVE."
     )
     st.markdown(
-        f"<div style='font-size:0.78rem;color:#94a3b8;margin-top:4px'>"
-        f"Score ≥ {threshold:.2f} will be classified as POSITIVE</div>",
+        f"<p style='font-size:0.78rem;color:#64748b;margin-top:4px'>"
+        f"Score ≥ {threshold:.2f} → POSITIVE</p>",
         unsafe_allow_html=True
     )
 
     st.markdown("---")
-    st.markdown("""
-    <div style='font-size:0.78rem;color:#94a3b8;line-height:1.7'>
-    Built by <strong style='color:#475569'>Sravan Kumar Kurapati</strong><br>
-    MS Information Systems<br>
-    Northeastern University
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        "<p style='font-size:0.78rem;color:#64748b;line-height:1.7'>"
+        "Built by <strong style='color:#374151'>Sravan Kumar Kurapati</strong>"
+        "<br>MS Information Systems<br>Northeastern University</p>",
+        unsafe_allow_html=True
+    )
 
-# ── hero banner ────────────────────────────────────────────────────────
+# ── hero ───────────────────────────────────────────────────────────────
 st.markdown("""
 <div class='hero'>
     <div class='hero-title'>🎬 SentimentLens</div>
     <div class='hero-subtitle'>
-        Real-time movie review sentiment analysis powered by
-        LSTM deep learning — type any review and get an instant prediction.
+        Real-time movie review sentiment analysis —
+        powered by LSTM deep learning and deployed on AWS
     </div>
     <span class='hero-badge'>LSTM</span>
     <span class='hero-badge'>NLP</span>
     <span class='hero-badge'>TENSORFLOW</span>
-    <span class='hero-badge'>LIVE API</span>
     <span class='hero-badge'>AWS EC2</span>
+    <span class='hero-badge'>83.54% ACCURACY</span>
 </div>
 """, unsafe_allow_html=True)
 
-# ── input card ─────────────────────────────────────────────────────────
-st.markdown("""
-<div class='content-card'>
-    <div class='card-label'>Enter your review</div>
-</div>
-""", unsafe_allow_html=True)
+# ── input ──────────────────────────────────────────────────────────────
+st.markdown(
+    "<p class='section-label'>Enter a movie review</p>",
+    unsafe_allow_html=True
+)
 
 review_text = st.text_area(
     label="",
-    placeholder="Type or paste any movie review here...\n\n"
+    placeholder="Type or paste any movie review here...\n"
                 "Tip: longer reviews (20+ words) give more accurate results.",
-    height=160,
+    height=130,
     key="review_input"
 )
 
 # ── analyse button ─────────────────────────────────────────────────────
-st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    analyse_clicked = st.button(
-        "🔍  Analyse Sentiment",
-        use_container_width=True
-    )
+analyse_clicked = st.button("🔍  Analyse Sentiment")
 
-# ── example reviews — display only, no autofill ───────────────────────
-with st.expander("📖  See example reviews to try"):
+# ── examples expander ──────────────────────────────────────────────────
+with st.expander("📖  See example reviews"):
     st.markdown(
-        "<div style='font-size:0.78rem;font-weight:700;"
-        "color:#1a56db;letter-spacing:.06em;"
-        "text-transform:uppercase;margin-bottom:8px'>"
-        "Positive examples</div>",
+        "<p style='font-size:0.72rem;font-weight:700;color:#15803d;"
+        "letter-spacing:.07em;text-transform:uppercase;"
+        "margin-bottom:6px'>Positive examples</p>",
         unsafe_allow_html=True
     )
     st.markdown("""
     <div class='example-box'>
     "This was one of the most brilliant films I have ever watched.
     The acting was outstanding, the story compelling from start to finish,
-    and the direction masterful. I left feeling genuinely moved and uplifted."
+    and the direction masterful. I left feeling genuinely moved."
     </div>
     <div class='example-box'>
-    "An absolute masterpiece of modern cinema. Every scene was crafted
-    with care and the performances were breathtaking. Highly recommended
-    to anyone who appreciates great storytelling."
+    "An absolute masterpiece. Every scene was crafted with care and
+    the performances were breathtaking. Highly recommended."
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown(
-        "<div style='font-size:0.78rem;font-weight:700;"
-        "color:#dc2626;letter-spacing:.06em;"
-        "text-transform:uppercase;margin:12px 0 8px'>"
-        "Negative examples</div>",
+        "<p style='font-size:0.72rem;font-weight:700;color:#b91c1c;"
+        "letter-spacing:.07em;text-transform:uppercase;"
+        "margin:10px 0 6px'>Negative examples</p>",
         unsafe_allow_html=True
     )
     st.markdown("""
-    <div class='example-box' style='border-left-color:#dc2626'>
-    "This was one of the worst films I have ever had the misfortune
-    of watching. The acting was atrocious, the story made no sense,
-    and every scene was painful to sit through."
+    <div class='example-box-neg'>
+    "This was one of the worst films I have ever watched. The acting was
+    atrocious, the story made no sense, and every scene was painful
+    to sit through. A complete waste of time."
     </div>
-    <div class='example-box' style='border-left-color:#dc2626'>
-    "A complete waste of time. Terrible script, dreadful pacing,
-    and performances so wooden they were painful to watch.
-    I walked out after the first hour."
+    <div class='example-box-neg'>
+    "Terrible script, dreadful pacing, and wooden performances.
+    I walked out after the first hour and never looked back."
     </div>
     """, unsafe_allow_html=True)
 
@@ -472,7 +494,7 @@ if analyse_clicked and review_text.strip():
 
                 # metrics
                 st.markdown(
-                    "<div style='height:16px'></div>",
+                    "<div style='height:14px'></div>",
                     unsafe_allow_html=True
                 )
                 m1, m2, m3 = st.columns(3)
@@ -482,16 +504,16 @@ if analyse_clicked and review_text.strip():
                     st.metric(
                         label="RAW SCORE",
                         value=f"{score:.3f}",
-                        help="0.0 = strongly negative → 1.0 = strongly positive"
+                        help="0.0 = strongly negative  →  1.0 = strongly positive"
                     )
                 with m3:
                     st.metric(label="WORD COUNT", value=word_count)
 
                 # confidence bar
                 st.markdown(
-                    "<div style='margin-top:16px;font-size:0.8rem;"
-                    "font-weight:600;color:#475569;"
-                    "margin-bottom:6px'>Confidence level</div>",
+                    "<p style='font-size:0.8rem;font-weight:600;"
+                    "color:#374151;margin:14px 0 6px'>"
+                    "Confidence level</p>",
                     unsafe_allow_html=True
                 )
                 st.progress(confidence / 100)
@@ -507,16 +529,13 @@ if analyse_clicked and review_text.strip():
                 )
                 st.markdown(f"""
                 <div class='score-box'>
-                    <strong style='color:#1e293b'>
-                        How to read this result
-                    </strong><br><br>
-                    📊  Score <code>{score:.3f}</code> means the model
-                    assigns a <strong>{score*100:.1f}%</strong> probability
+                    <strong>How to read this result</strong><br><br>
+                    📊 Score <code>{score:.3f}</code> means the model assigns a
+                    <strong>{score*100:.1f}%</strong> probability
                     that this review is positive<br>
-                    🎚  Threshold is <code>{threshold:.2f}</code> —
-                    scores above this are labelled
-                    <strong>POSITIVE</strong><br>
-                    🔍  {verdict}
+                    🎚 Threshold is <code>{threshold:.2f}</code> —
+                    scores above this are labelled POSITIVE<br>
+                    🔍 {verdict}
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -531,10 +550,7 @@ if analyse_clicked and review_text.strip():
                 "Make sure FastAPI is running on port 8000."
             )
         except requests.exceptions.Timeout:
-            st.error(
-                "⏱  Request timed out. "
-                "The server took too long to respond."
-            )
+            st.error("⏱  Request timed out. The server took too long.")
         except Exception as e:
             st.error(f"Unexpected error: {str(e)}")
 
@@ -543,12 +559,15 @@ elif analyse_clicked and not review_text.strip():
 
 # ── footer ─────────────────────────────────────────────────────────────
 st.markdown("---")
-st.markdown("""
-<div class='footer'>
-    SentimentLens &nbsp;·&nbsp;
-    LSTM + TensorFlow &nbsp;·&nbsp;
-    FastAPI + Streamlit &nbsp;·&nbsp;
-    Deployed on AWS EC2 &nbsp;·&nbsp;
-    Built by Sravan Kumar Kurapati
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+        "<p style='font-size:0.78rem;color:#64748b;line-height:1.9'>"
+        "Built by <strong style='color:#374151'>Sravan Kumar Kurapati</strong><br>"
+        "MS Information Systems<br>"
+        "Northeastern University<br>"
+        "<a href='mailto:kurapati.sr@northeastern.edu' "
+        "style='color:#1d4ed8;text-decoration:none'>"
+        "kurapati.sr@northeastern.edu</a><br>"
+        "<span style='color:#374151'>+1-857-427-7767</span>"
+        "</p>",
+        unsafe_allow_html=True
+    )
