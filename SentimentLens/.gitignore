@@ -1,0 +1,21 @@
+# .gitignore — tells Git what NOT to track
+
+# model files — too large and binary, upload to EC2 directly
+model/
+
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# virtual environment — never commit this
+venv/
+.venv/
+env/
+
+# Mac system files
+.DS_Store
+
+# environment variables file (if you add one later)
+.env
