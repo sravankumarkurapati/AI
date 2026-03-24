@@ -23,12 +23,6 @@ SentimentLens classifies any movie review as **POSITIVE** or **NEGATIVE** in rea
 
 ---
 
-## 🖼 Screenshot
-
-> *(Add your screenshot here — drag and drop the image into this section on GitHub)*
-
----
-
 ## 🧠 How It Works
 ```
 User types review
