@@ -367,9 +367,8 @@ with st.expander("📖  See example reviews"):
     )
     st.markdown(
         "<div class='ex-pos'>"
-        "\"This was one of the most brilliant films I have ever watched. "
-        "The acting was outstanding, the story compelling from start to "
-        "finish, and the direction masterful.\"</div>",
+        "\"This beautifully crafted short film delivers a powerful emotional impact within a limited runtime, boasting superb acting and standout visuals."
+        "\"</div>",
         unsafe_allow_html=True
     )
     st.markdown(
@@ -380,8 +379,9 @@ with st.expander("📖  See example reviews"):
     )
     st.markdown(
         "<div class='ex-neg'>"
-        "\"This beautifully crafted short film delivers a powerful emotional impact within a limited runtime, boasting superb acting and standout visuals."
-        "\"</div>",
+        "\"This was one of the worst films I have ever watched. "
+        "The acting was atrocious, the story made no sense, "
+        "and every scene was painful to sit through.\"</div>",
         unsafe_allow_html=True
     )
 
