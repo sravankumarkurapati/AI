@@ -1,5 +1,3 @@
-# ── ui.py — SentimentLens ──────────────────────────────────────────────
-
 import streamlit as st
 import requests
 import os
@@ -18,13 +16,11 @@ st.markdown("""
     footer { visibility: hidden; }
     [data-testid="stToolbar"] { display: none; }
 
-    /* sidebar — navy */
     section[data-testid="stSidebar"] {
         background-color: #1e3a5f !important;
         min-width: 260px !important;
         max-width: 260px !important;
     }
-    /* force ALL sidebar text white */
     section[data-testid="stSidebar"] p,
     section[data-testid="stSidebar"] span,
     section[data-testid="stSidebar"] div,
@@ -34,25 +30,23 @@ st.markdown("""
     }
     section[data-testid="stSidebar"] hr {
         border-color: rgba(255,255,255,0.15) !important;
-        margin: 12px 0 !important;
+        margin: 8px 0 !important;
     }
 
-    /* page */
     .stApp { background: #ffffff; }
     .main .block-container {
-        padding: 1.8rem 2.5rem !important;
+        padding: 0.6rem 1.8rem !important;
         max-width: 800px !important;
     }
 
-    /* text area */
     .stTextArea textarea {
         background: #f8fafc !important;
         border: 1.5px solid #cbd5e1 !important;
         border-radius: 10px !important;
         color: #0f172a !important;
-        font-size: 0.95rem !important;
-        line-height: 1.7 !important;
-        padding: 12px 14px !important;
+        font-size: 0.93rem !important;
+        line-height: 1.6 !important;
+        padding: 10px 13px !important;
     }
     .stTextArea textarea:focus {
         border-color: #1d4ed8 !important;
@@ -61,151 +55,140 @@ st.markdown("""
     }
     .stTextArea textarea::placeholder { color: #94a3b8 !important; }
 
-    /* button */
     div[data-testid="stButton"] button {
         background: linear-gradient(135deg,#1d4ed8,#1e40af) !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 10px !important;
-        font-size: 0.95rem !important;
+        font-size: 0.93rem !important;
         font-weight: 600 !important;
-        padding: 0.65rem 1.5rem !important;
+        padding: 0.55rem 1.5rem !important;
         box-shadow: 0 3px 12px rgba(29,78,216,0.25) !important;
         width: 100% !important;
-        margin-top: 8px !important;
+        margin-top: 6px !important;
     }
     div[data-testid="stButton"] button:hover {
         box-shadow: 0 5px 18px rgba(29,78,216,0.4) !important;
         transform: translateY(-1px) !important;
     }
 
-    /* result */
     .res-pos {
         background: #f0fdf4;
         border: 1.5px solid #86efac;
         border-left: 6px solid #16a34a;
         border-radius: 12px;
-        padding: 18px 22px;
-        margin-top: 16px;
+        padding: 14px 20px;
+        margin-top: 12px;
     }
     .res-neg {
         background: #fff1f2;
         border: 1.5px solid #fecdd3;
         border-left: 6px solid #dc2626;
         border-radius: 12px;
-        padding: 18px 22px;
-        margin-top: 16px;
+        padding: 14px 20px;
+        margin-top: 12px;
     }
     .res-title-pos {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 800;
         color: #15803d;
-        margin: 0 0 4px;
+        margin: 0 0 3px;
     }
     .res-title-neg {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 800;
         color: #b91c1c;
-        margin: 0 0 4px;
+        margin: 0 0 3px;
     }
     .res-row {
         display: flex;
-        gap: 24px;
-        margin-top: 10px;
+        gap: 22px;
+        margin-top: 8px;
         flex-wrap: wrap;
     }
-    .res-stat {
-        display: flex;
-        flex-direction: column;
-    }
+    .res-stat { display: flex; flex-direction: column; }
     .res-stat-label {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
         font-weight: 700;
         color: #64748b;
         letter-spacing: 0.07em;
         text-transform: uppercase;
-        margin-bottom: 2px;
+        margin-bottom: 1px;
     }
     .res-stat-value {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         font-weight: 700;
         color: #0f172a;
     }
-    .res-bar-wrap {
-        margin-top: 12px;
-    }
+    .res-bar-wrap { margin-top: 10px; }
     .res-bar-label {
-        font-size: 0.75rem;
+        font-size: 0.72rem;
         color: #475569;
         font-weight: 600;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
     }
     .res-bar-track {
         background: #e2e8f0;
         border-radius: 6px;
-        height: 8px;
+        height: 7px;
         overflow: hidden;
     }
     .res-bar-fill-pos {
         height: 100%;
         border-radius: 6px;
-        background: linear-gradient(90deg, #16a34a, #22c55e);
+        background: linear-gradient(90deg,#16a34a,#22c55e);
     }
     .res-bar-fill-neg {
         height: 100%;
         border-radius: 6px;
-        background: linear-gradient(90deg, #dc2626, #ef4444);
+        background: linear-gradient(90deg,#dc2626,#ef4444);
     }
 
-    /* example boxes */
     .ex-pos {
         background: #f0fdf4;
         border-left: 4px solid #16a34a;
         border-radius: 0 8px 8px 0;
-        padding: 9px 13px;
-        font-size: 0.82rem;
+        padding: 8px 12px;
+        font-size: 0.81rem;
         color: #1e293b;
         font-style: italic;
         line-height: 1.6;
-        margin: 5px 0;
+        margin: 4px 0;
     }
     .ex-neg {
         background: #fff1f2;
         border-left: 4px solid #dc2626;
         border-radius: 0 8px 8px 0;
-        padding: 9px 13px;
-        font-size: 0.82rem;
+        padding: 8px 12px;
+        font-size: 0.81rem;
         color: #1e293b;
         font-style: italic;
         line-height: 1.6;
-        margin: 5px 0;
+        margin: 4px 0;
     }
 
-    /* expander */
     details {
         background: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 10px !important;
-        margin-top: 10px !important;
+        margin-top: 8px !important;
     }
     details summary {
-        font-size: 0.82rem !important;
+        font-size: 0.81rem !important;
         font-weight: 600 !important;
         color: #1d4ed8 !important;
-        padding: 9px 13px !important;
+        padding: 8px 13px !important;
         cursor: pointer !important;
     }
 
-    /* divider */
-    hr { border-color: #f1f5f9 !important; margin: 14px 0 !important; }
+    hr { border-color: #f1f5f9 !important; margin: 8px 0 !important; }
 
-    /* footer */
     .footer {
         text-align: center;
         color: #94a3b8;
-        font-size: 0.73rem;
-        margin-top: 18px;
-        padding-top: 12px;
+        font-size: 0.72rem;
+        margin-top: 14px;
+        padding-top: 10px;
         border-top: 1px solid #f1f5f9;
         line-height: 1.7;
     }
@@ -213,7 +196,7 @@ st.markdown("""
 
     div[data-testid="stAlert"] {
         border-radius: 10px !important;
-        font-size: 0.84rem !important;
+        font-size: 0.83rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -225,13 +208,12 @@ API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 # ══════════════════════════════════════════════════
 with st.sidebar:
 
-    # brand
     st.markdown(
-        "<div style='padding:6px 0 14px'>"
-        "<div style='font-size:1.25rem;font-weight:800;color:#ffffff;"
+        "<div style='padding:4px 0 12px'>"
+        "<div style='font-size:1.2rem;font-weight:800;color:#ffffff;"
         "letter-spacing:-0.01em;'>🎬 Sentiment"
         "<span style='color:#60a5fa'>Lens</span></div>"
-        "<div style='font-size:0.74rem;color:#93c5fd;"
+        "<div style='font-size:0.73rem;color:#93c5fd;"
         "line-height:1.5;margin-top:4px;'>"
         "AI-powered movie review<br>sentiment analysis</div></div>",
         unsafe_allow_html=True
@@ -239,91 +221,91 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # model details
     st.markdown(
-        "<div style='font-size:0.61rem;font-weight:700;color:#60a5fa;"
+        "<div style='font-size:0.6rem;font-weight:700;color:#60a5fa;"
         "letter-spacing:0.1em;text-transform:uppercase;"
-        "margin-bottom:10px;'>Model Details</div>",
+        "margin-bottom:8px;'>Model Details</div>",
         unsafe_allow_html=True
     )
-    rows = [
-        ("🏗", "Architecture", "LSTM"),
-        ("📊", "Dataset",      "IMDB 25k"),
-        ("🎯", "Accuracy",     "83.54%"),
-        ("📖", "Vocabulary",   "10,000 words"),
-        ("⚖️", "Parameters",   "1.3M weights"),
-    ]
-    for icon, k, v in rows:
-        accent = (
+    for icon, k, v, is_acc in [
+        ("🏗", "Architecture", "LSTM",         False),
+        ("📊", "Dataset",      "IMDB 25k",     False),
+        ("🎯", "Accuracy",     "83.54%",       True),
+        ("📖", "Vocabulary",   "10,000 words", False),
+        ("⚖️", "Parameters",   "1.3M weights", False),
+    ]:
+        val_style = (
             "color:#93c5fd;background:rgba(96,165,250,0.15);"
             "border:1px solid rgba(96,165,250,0.3);"
             "padding:1px 7px;border-radius:5px;"
-            if k == "Accuracy" else "color:#ffffff;"
+            if is_acc else "color:#ffffff;"
         )
         st.markdown(
             f"<div style='display:flex;justify-content:space-between;"
-            f"align-items:center;padding:5px 0;"
+            f"align-items:center;padding:4px 0;"
             f"border-bottom:1px solid rgba(255,255,255,0.06);'>"
-            f"<span style='font-size:0.75rem;color:#94a3b8;'>"
+            f"<span style='font-size:0.74rem;color:#94a3b8;'>"
             f"{icon} {k}</span>"
-            f"<span style='font-size:0.75rem;font-weight:600;{accent}'>"
+            f"<span style='font-size:0.74rem;font-weight:600;{val_style}'>"
             f"{v}</span></div>",
             unsafe_allow_html=True
         )
 
     st.markdown("---")
 
-    # stack
     st.markdown(
-        "<div style='font-size:0.61rem;font-weight:700;color:#60a5fa;"
+        "<div style='font-size:0.6rem;font-weight:700;color:#60a5fa;"
         "letter-spacing:0.1em;text-transform:uppercase;"
-        "margin-bottom:10px;'>Tech Stack</div>",
+        "margin-bottom:8px;'>Tech Stack</div>",
         unsafe_allow_html=True
     )
-    for chip in ["TensorFlow","Keras LSTM","FastAPI",
-                 "Streamlit","Docker","AWS EC2","Python"]:
-        st.markdown(
-            f"<span style='display:inline-block;font-size:0.65rem;"
-            f"font-weight:600;padding:3px 9px;border-radius:10px;"
-            f"background:rgba(96,165,250,0.12);"
-            f"border:1px solid rgba(96,165,250,0.28);"
-            f"color:#93c5fd;margin:2px;'>{chip}</span>",
-            unsafe_allow_html=True
-        )
+    # chips wrap naturally — 2-3 per row depending on sidebar width
+    chips_html = "".join([
+        f"<span style='display:inline-block;font-size:0.64rem;"
+        f"font-weight:600;padding:3px 8px;border-radius:10px;"
+        f"background:rgba(96,165,250,0.12);"
+        f"border:1px solid rgba(96,165,250,0.28);"
+        f"color:#93c5fd;margin:2px 2px;'>{c}</span>"
+        for c in ["TensorFlow","Keras LSTM","FastAPI",
+                  "Streamlit","Docker","AWS EC2","Python"]
+    ])
+    st.markdown(
+        f"<div style='line-height:2;'>{chips_html}</div>",
+        unsafe_allow_html=True
+    )
 
     st.markdown("---")
 
-    # built by
     st.markdown(
-        "<div style='font-size:0.61rem;font-weight:700;color:#60a5fa;"
+        "<div style='font-size:0.6rem;font-weight:700;color:#60a5fa;"
         "letter-spacing:0.1em;text-transform:uppercase;"
-        "margin-bottom:10px;'>Built By</div>"
-        "<div style='font-size:0.88rem;font-weight:700;"
-        "color:#ffffff;margin-bottom:3px;'>"
+        "margin-bottom:8px;'>Built By</div>"
+        "<div style='font-size:0.86rem;font-weight:700;"
+        "color:#ffffff;margin-bottom:2px;'>"
         "Sravan Kumar Kurapati</div>"
-        "<div style='font-size:0.73rem;color:#94a3b8;line-height:1.7;'>"
+        "<div style='font-size:0.72rem;color:#94a3b8;line-height:1.6;'>"
         "MS Information Systems<br>"
-        "Northeastern University, Boston MA</div>",
+        "Northeastern University<br>"
+        "Boston, MA</div>",
         unsafe_allow_html=True
     )
 
     st.markdown("---")
 
-    # contact
     st.markdown(
-        "<div style='font-size:0.61rem;font-weight:700;color:#60a5fa;"
+        "<div style='font-size:0.6rem;font-weight:700;color:#60a5fa;"
         "letter-spacing:0.1em;text-transform:uppercase;"
-        "margin-bottom:10px;'>Contact</div>"
+        "margin-bottom:8px;'>Contact</div>"
         "<div style='display:flex;align-items:flex-start;"
-        "gap:8px;margin-bottom:8px;'>"
-        "<span style='font-size:12px;margin-top:2px;'>✉️</span>"
+        "gap:7px;margin-bottom:7px;'>"
+        "<span style='font-size:12px;margin-top:2px;flex-shrink:0;'>✉️</span>"
         "<a href='mailto:kurapati.sr@northeastern.edu' "
-        "style='font-size:0.72rem;color:#60a5fa;text-decoration:none;"
+        "style='font-size:0.71rem;color:#60a5fa;text-decoration:none;"
         "word-break:break-all;line-height:1.5;'>"
         "kurapati.sr@northeastern.edu</a></div>"
-        "<div style='display:flex;align-items:center;gap:8px;'>"
-        "<span style='font-size:12px;'>📞</span>"
-        "<span style='font-size:0.72rem;color:#94a3b8;'>"
+        "<div style='display:flex;align-items:center;gap:7px;'>"
+        "<span style='font-size:12px;flex-shrink:0;'>📞</span>"
+        "<span style='font-size:0.71rem;color:#94a3b8;'>"
         "+1-857-427-7767</span></div>",
         unsafe_allow_html=True
     )
@@ -332,37 +314,37 @@ with st.sidebar:
 # MAIN
 # ══════════════════════════════════════════════════
 
-# header
 st.markdown(
-    "<h1 style='font-size:1.6rem;font-weight:800;color:#0f172a;"
-    "letter-spacing:-0.02em;margin:0 0 4px;'>"
+    "<h1 style='font-size:1.4rem;font-weight:800;color:#0f172a;"
+    "letter-spacing:-0.02em;margin:0 0 2px;'>"
     "🎬 SentimentLens</h1>"
-    "<p style='font-size:0.86rem;color:#64748b;margin:0 0 10px;'>"
+    "<p style='font-size:0.83rem;color:#64748b;margin:0 0 8px;'>"
     "Real-time movie review sentiment analysis — "
     "powered by LSTM deep learning</p>",
     unsafe_allow_html=True
 )
 
-# badges
 st.markdown(
     " ".join([
         f"<span style='display:inline-block;background:#eff6ff;"
         f"border:1px solid #bfdbfe;color:#1d4ed8;"
-        f"padding:2px 10px;border-radius:20px;"
-        f"font-size:0.67rem;font-weight:700;"
+        f"padding:2px 9px;border-radius:20px;"
+        f"font-size:0.66rem;font-weight:700;"
         f"letter-spacing:0.06em;'>{b}</span>"
         for b in ["LSTM","NLP","TENSORFLOW","FASTAPI","AWS EC2"]
     ]),
     unsafe_allow_html=True
 )
 
-st.markdown("---")
-
-# input
 st.markdown(
-    "<p style='font-size:0.7rem;font-weight:700;color:#1d4ed8;"
+    "<hr style='border-color:#f1f5f9;margin:8px 0;'>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "<p style='font-size:0.68rem;font-weight:700;color:#1d4ed8;"
     "letter-spacing:0.08em;text-transform:uppercase;"
-    "margin:0 0 6px;'>Enter a movie review</p>",
+    "margin:0 0 5px;'>Enter a movie review</p>",
     unsafe_allow_html=True
 )
 
@@ -370,18 +352,17 @@ review_text = st.text_area(
     label="",
     placeholder="Type or paste any movie review here...\n"
                 "Tip: longer reviews give more accurate results.",
-    height=120,
+    height=100,
     key="review_input"
 )
 
 analyse_clicked = st.button("🔍  Analyse Sentiment")
 
-# examples
 with st.expander("📖  See example reviews"):
     st.markdown(
-        "<p style='font-size:0.67rem;font-weight:700;color:#15803d;"
+        "<p style='font-size:0.66rem;font-weight:700;color:#15803d;"
         "letter-spacing:0.07em;text-transform:uppercase;"
-        "margin:0 0 5px;'>Positive</p>",
+        "margin:0 0 4px;'>Positive</p>",
         unsafe_allow_html=True
     )
     st.markdown(
@@ -392,9 +373,9 @@ with st.expander("📖  See example reviews"):
         unsafe_allow_html=True
     )
     st.markdown(
-        "<p style='font-size:0.67rem;font-weight:700;color:#b91c1c;"
+        "<p style='font-size:0.66rem;font-weight:700;color:#b91c1c;"
         "letter-spacing:0.07em;text-transform:uppercase;"
-        "margin:8px 0 5px;'>Negative</p>",
+        "margin:7px 0 4px;'>Negative</p>",
         unsafe_allow_html=True
     )
     st.markdown(
@@ -421,23 +402,26 @@ if analyse_clicked and review_text.strip():
                 score      = result["score"]
                 confidence = result["confidence"]
                 word_count = result["word_count"]
-
-                # build bar width
-                bar_w = f"{confidence}%"
+                bar_w      = f"{confidence}%"
+                verdict    = (
+                    "✅ Strong prediction"
+                    if confidence > 75
+                    else "⚠️ Low confidence — try a longer review"
+                )
 
                 if label == "POSITIVE":
                     st.markdown(f"""
                     <div class='res-pos'>
                         <div class='res-title-pos'>👍 POSITIVE</div>
-                        <div style='font-size:0.85rem;color:#374151;
-                                    margin-bottom:10px;'>
+                        <div style='font-size:0.83rem;color:#374151;
+                                    margin-bottom:8px;'>
                             The model detected positive sentiment.
                         </div>
                         <div class='res-row'>
                             <div class='res-stat'>
                                 <div class='res-stat-label'>Confidence</div>
                                 <div class='res-stat-value'
-                                     style='color:#15803d;'>{confidence}%</div>
+                                style='color:#15803d;'>{confidence}%</div>
                             </div>
                             <div class='res-stat'>
                                 <div class='res-stat-label'>Score</div>
@@ -449,28 +433,32 @@ if analyse_clicked and review_text.strip():
                             </div>
                         </div>
                         <div class='res-bar-wrap'>
-                            <div class='res-bar-label'>
-                                Confidence level</div>
+                            <div class='res-bar-label'>Confidence level</div>
                             <div class='res-bar-track'>
                                 <div class='res-bar-fill-pos'
-                                     style='width:{bar_w}'></div>
+                                style='width:{bar_w}'></div>
                             </div>
                         </div>
                     </div>
+                    <p style='font-size:0.78rem;color:#64748b;
+                              margin-top:8px;'>{verdict}
+                    &nbsp;·&nbsp; Score {score:.3f} / 1.0
+                    &nbsp;·&nbsp; ≥ 0.5 = POSITIVE</p>
                     """, unsafe_allow_html=True)
+
                 else:
                     st.markdown(f"""
                     <div class='res-neg'>
                         <div class='res-title-neg'>👎 NEGATIVE</div>
-                        <div style='font-size:0.85rem;color:#374151;
-                                    margin-bottom:10px;'>
+                        <div style='font-size:0.83rem;color:#374151;
+                                    margin-bottom:8px;'>
                             The model detected negative sentiment.
                         </div>
                         <div class='res-row'>
                             <div class='res-stat'>
                                 <div class='res-stat-label'>Confidence</div>
                                 <div class='res-stat-value'
-                                     style='color:#b91c1c;'>{confidence}%</div>
+                                style='color:#b91c1c;'>{confidence}%</div>
                             </div>
                             <div class='res-stat'>
                                 <div class='res-stat-label'>Score</div>
@@ -482,29 +470,18 @@ if analyse_clicked and review_text.strip():
                             </div>
                         </div>
                         <div class='res-bar-wrap'>
-                            <div class='res-bar-label'>
-                                Confidence level</div>
+                            <div class='res-bar-label'>Confidence level</div>
                             <div class='res-bar-track'>
                                 <div class='res-bar-fill-neg'
-                                     style='width:{bar_w}'></div>
+                                style='width:{bar_w}'></div>
                             </div>
                         </div>
                     </div>
+                    <p style='font-size:0.78rem;color:#64748b;
+                              margin-top:8px;'>{verdict}
+                    &nbsp;·&nbsp; Score {score:.3f} / 1.0
+                    &nbsp;·&nbsp; &lt; 0.5 = NEGATIVE</p>
                     """, unsafe_allow_html=True)
-
-                # short note
-                verdict = (
-                    "✅ Strong prediction"
-                    if confidence > 75
-                    else "⚠️ Low confidence — try a longer review"
-                )
-                st.markdown(
-                    f"<p style='font-size:0.8rem;color:#64748b;"
-                    f"margin-top:10px;'>{verdict} &nbsp;·&nbsp; "
-                    f"Score {score:.3f} out of 1.0 "
-                    f"(≥0.5 = POSITIVE)</p>",
-                    unsafe_allow_html=True
-                )
 
             else:
                 st.error(f"API error {response.status_code}: {response.text}")
@@ -519,7 +496,6 @@ if analyse_clicked and review_text.strip():
 elif analyse_clicked and not review_text.strip():
     st.warning("Please enter a review first.")
 
-# footer
 st.markdown(
     "<div class='footer'>"
     "SentimentLens &nbsp;·&nbsp; LSTM + TensorFlow &nbsp;·&nbsp; "
