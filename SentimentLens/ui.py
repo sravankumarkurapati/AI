@@ -358,32 +358,7 @@ review_text = st.text_area(
 
 analyse_clicked = st.button("🔍  Analyse Sentiment")
 
-with st.expander("📖  See example reviews"):
-    st.markdown(
-        "<p style='font-size:0.66rem;font-weight:700;color:#15803d;"
-        "letter-spacing:0.07em;text-transform:uppercase;"
-        "margin:0 0 4px;'>Positive</p>",
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        "<div class='ex-pos'>"
-        "\"This beautifully crafted short film delivers a powerful emotional impact within a limited runtime, boasting superb acting and standout visuals."
-        "\"</div>",
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        "<p style='font-size:0.66rem;font-weight:700;color:#b91c1c;"
-        "letter-spacing:0.07em;text-transform:uppercase;"
-        "margin:7px 0 4px;'>Negative</p>",
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        "<div class='ex-neg'>"
-        "\"This was one of the worst films I have ever watched. "
-        "The acting was atrocious, the story made no sense, "
-        "and every scene was painful to sit through.\"</div>",
-        unsafe_allow_html=True
-    )
+
 
 # ── prediction ──────────────────────────────────────────────────────────
 if analyse_clicked and review_text.strip():
