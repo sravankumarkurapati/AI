@@ -380,9 +380,8 @@ with st.expander("📖  See example reviews"):
     )
     st.markdown(
         "<div class='ex-neg'>"
-        "\"This was one of the worst films I have ever watched. "
-        "The acting was atrocious, the story made no sense, "
-        "and every scene was painful to sit through.\"</div>",
+        "\"This beautifully crafted short film delivers a powerful emotional impact within a limited runtime, boasting superb acting and standout visuals."
+        "\"</div>",
         unsafe_allow_html=True
     )
 
